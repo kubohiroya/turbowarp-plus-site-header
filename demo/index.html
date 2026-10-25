@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Demo — a docs page with its own strong styling</title>
+    <link rel="alternate" hreflang="en" href="./index.html" />
+    <link rel="alternate" hreflang="ja" href="./ja.html" />
+    <style>
+      /* Deliberately opinionated, the way each of these sites already is.
+     None of it must reach inside the header, and none of the header's
+     styling must leak out here. */
+      * {
+        font-family: Georgia, serif;
+      }
+      body {
+        margin: 0;
+        background: #fffaf0;
+        color: #3b2b20;
+      }
+      a {
+        color: #c2410c;
+        font-size: 20px;
+        font-weight: 900;
+        text-decoration: underline;
+      }
+      nav {
+        background: lime;
+        padding: 30px;
+        border: 6px dashed magenta;
+      }
+      svg {
+        width: 120px;
+        height: 120px;
+      }
+      span {
+        letter-spacing: 6px;
+        text-transform: uppercase;
+      }
+      main {
+        max-width: 46rem;
+        margin: 0 auto;
+        padding: 2rem 1rem 5rem;
+        line-height: 1.7;
+      }
+      h1 {
+        font-size: 2.2rem;
+      }
+    </style>
+  </head>
+  <body>
+    <turbowarp-plus-header repo="turbowarp-jsqr" sticky></turbowarp-plus-header>
+
+    <main>
+      <h1>jsQR user guide</h1>
+      <p>
+        This page carries a stylesheet that would wreck a header pasted into the
+        document: every <a href="#">link</a> is orange, 20px and heavy, every
+        <span>span</span> is letter-spaced and upper-cased, every
+        <code>svg</code> is 120px, and any <code>nav</code> gets a lime
+        background with a magenta dashed border.
+      </p>
+      <nav>A nav element on the page, styled by the page.</nav>
+      <p>
+        The header above is in a shadow root, so none of that reaches it — and
+        its own rules do not reach this text either.
+      </p>
+    </main>
+    <script type="module" src="../dist/auto.js"></script>
+  </body>
+</html>

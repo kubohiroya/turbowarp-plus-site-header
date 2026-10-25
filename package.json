@@ -1,0 +1,70 @@
+{
+  "name": "@kubohiroya/turbowarp-plus-site-header",
+  "version": "0.1.0",
+  "private": false,
+  "type": "module",
+  "description": "A shared header for the documentation sites of the TurboWarp Plus packages.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kubohiroya/turbowarp-plus-site-header.git"
+  },
+  "bugs": {
+    "url": "https://github.com/kubohiroya/turbowarp-plus-site-header/issues"
+  },
+  "homepage": "https://github.com/kubohiroya/turbowarp-plus-site-header#readme",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./auto": {
+      "types": "./dist/auto.d.ts",
+      "import": "./dist/auto.js"
+    },
+    "./header.css": "./dist/header.css",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist/",
+    "README.md",
+    "README.ja.md",
+    "LICENSE"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "packageManager": "pnpm@11.18.0",
+  "scripts": {
+    "build": "tsc --project tsconfig.build.json && node scripts/emit-css.mjs",
+    "clean": "rm -rf dist",
+    "demo": "npm run build && node demo/serve.mjs",
+    "format": "prettier --check \"**/*.{css,html,json,md,ts,yml}\"",
+    "lint": "eslint eslint.config.mjs scripts src test",
+    "prepack": "npm run verify",
+    "prepare": "npm run build",
+    "test": "npm run build && node --test --experimental-strip-types test/*.test.ts",
+    "typecheck": "tsc --project tsconfig.json",
+    "verify": "npm run lint && npm run format && npm run typecheck && npm run test"
+  },
+  "keywords": [
+    "turbowarp",
+    "turbowarp-plus",
+    "documentation",
+    "header",
+    "custom-element"
+  ],
+  "author": "Hiroya Kubo",
+  "license": "MPL-2.0",
+  "devDependencies": {
+    "@eslint/js": "10.0.1",
+    "@types/node": "^26.4.1",
+    "eslint": "^10.9.1",
+    "globals": "17.12.0",
+    "prettier": "^3.9.6",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.69.0"
+  },
+  "engines": {
+    "node": ">=22.18.0"
+  }
+}
