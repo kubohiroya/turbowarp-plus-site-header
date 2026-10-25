@@ -1,2 +1,5 @@
+# esbuild links a platform binary from an install script. pnpm blocks those by
+# default and fails the install rather than skipping them quietly, so it has to
+# be allowed by name.
 allowBuilds:
-  esbuild: set this to true or false
+  esbuild: true
