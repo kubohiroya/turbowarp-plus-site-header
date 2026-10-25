@@ -17,10 +17,15 @@
 export type {
   AlternateLink,
   HeaderLabels,
+  HeaderTheme,
+  LanguageSwitch,
+  RenderHeaderOptions,
   ResolveSiteOptions,
   SiteContext,
   SiteLanguage,
 } from "./types.ts";
+
+export { LANGUAGE_EVENT } from "./types.ts";
 
 export {
   DEFAULT_INDEX_URL,
@@ -42,7 +47,7 @@ export {
 export { TAG_NAME, TurboWarpPlusHeader, defineHeader } from "./element.ts";
 
 import { renderHeaderContent } from "./markup.ts";
-import type { SiteContext } from "./types.ts";
+import type { RenderHeaderOptions, SiteContext } from "./types.ts";
 
 /**
  * The header as a standalone HTML string, for pages generated at build time.
@@ -50,6 +55,9 @@ import type { SiteContext } from "./types.ts";
  * Unlike the custom element this is not in a shadow root, so the page must
  * load `header.css` and accept that its own stylesheet can reach the markup.
  */
-export function renderSiteHeader(site: SiteContext): string {
-  return renderHeaderContent(site);
+export function renderSiteHeader(
+  site: SiteContext,
+  options: RenderHeaderOptions = {},
+): string {
+  return renderHeaderContent(site, options);
 }

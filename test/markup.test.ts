@@ -63,8 +63,12 @@ test("a page with no declared translation shows no language link", () => {
 });
 
 test("gradient ids can be scoped so two headers on a page do not collide", () => {
-  const first = renderHeaderContent(resolveSite(`${PAGES}/a/`), "one");
-  const second = renderHeaderContent(resolveSite(`${PAGES}/a/`), "two");
+  const first = renderHeaderContent(resolveSite(`${PAGES}/a/`), {
+    idPrefix: "one",
+  });
+  const second = renderHeaderContent(resolveSite(`${PAGES}/a/`), {
+    idPrefix: "two",
+  });
   assert.match(first, /id="one-body"/u);
   assert.match(second, /id="two-body"/u);
 });
@@ -90,4 +94,23 @@ test("on the index itself the brand says so", () => {
     resolveSite(`${PAGES}/turbowarp-jsqr/`),
   );
   assert.doesNotMatch(elsewhere, /aria-current/u);
+});
+
+test("the buttons mode draws both languages and marks the current one", () => {
+  const html = renderHeaderContent(resolveSite(`${PAGES}/turbowarp-jsqr/ja/`), {
+    langSwitch: "buttons",
+  });
+  assert.match(html, /data-lang="en"[^>]*aria-pressed="false"/u);
+  assert.match(html, /data-lang="ja"[^>]*aria-pressed="true"/u);
+  assert.match(html, /English/u);
+  assert.match(html, /日本語/u);
+});
+
+test("the buttons mode replaces the link, rather than adding to it", () => {
+  const declared = [{ hreflang: "ja", href: `${PAGES}/turbowarp-jsqr/ja/` }];
+  const html = renderHeaderContent(
+    resolveSite(`${PAGES}/turbowarp-jsqr/`, { alternates: declared }),
+    { langSwitch: "buttons" },
+  );
+  assert.doesNotMatch(html, /hreflang=/u);
 });

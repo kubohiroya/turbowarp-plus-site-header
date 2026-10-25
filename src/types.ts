@@ -58,10 +58,31 @@ export interface SiteContext {
 /** "auto" follows the reader's system setting; the others are fixed. */
 export type HeaderTheme = "auto" | "light" | "dark";
 
+/**
+ * How the header offers the other language.
+ *
+ * "link" sends the reader to the translated page, which is what a site with
+ * two sets of pages wants. "buttons" is for a page that switches language in
+ * place: the header draws the control and announces the choice, and the page
+ * acts on it.
+ */
+export type LanguageSwitch = "link" | "buttons";
+
+export interface RenderHeaderOptions {
+  /** Scopes the gradient ids, so two headers on one page do not collide. */
+  readonly idPrefix?: string;
+  readonly theme?: HeaderTheme;
+  readonly langSwitch?: LanguageSwitch;
+}
+
+/** Fired on the element when a language button is pressed. */
+export const LANGUAGE_EVENT = "turbowarp-plus:language";
+
 export interface HeaderLabels {
   readonly brand: string;
   readonly indexTitle: string;
   readonly repository: string;
   readonly npm: string;
   readonly switchTo: string;
+  readonly language: string;
 }

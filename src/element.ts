@@ -1,8 +1,10 @@
 import { HEADER_CSS, renderHeaderContent } from "./markup.ts";
 import { resolveSite } from "./resolve.ts";
+import { LANGUAGE_EVENT } from "./types.ts";
 import type {
   AlternateLink,
   HeaderTheme,
+  LanguageSwitch,
   ResolveSiteOptions,
 } from "./types.ts";
 
@@ -77,10 +79,33 @@ export class TurboWarpPlusHeader extends HTMLElement {
     "sticky",
     "theme",
     "guess-alternate",
+    "lang-switch",
   ];
 
   private media: MediaQueryList | null = null;
+  private bound = false;
   private readonly onSchemeChange = (): void => this.render();
+
+  /**
+   * A page that switches language in place asked for buttons; this reports
+   * the press and leaves the page to do the work.
+   */
+  private readonly onClick = (event: Event): void => {
+    const target = event.composedPath()[0];
+    const button =
+      target instanceof Element ? target.closest("[data-lang]") : null;
+    const lang = button instanceof HTMLElement ? button.dataset.lang : null;
+    if (!lang) return;
+
+    this.setAttribute("site-lang", lang);
+    this.dispatchEvent(
+      new CustomEvent(LANGUAGE_EVENT, {
+        detail: { lang },
+        bubbles: true,
+        composed: true,
+      }),
+    );
+  };
 
   connectedCallback(): void {
     const view = this.ownerDocument.defaultView;
@@ -165,7 +190,17 @@ export class TurboWarpPlusHeader extends HTMLElement {
       ? ":host{position:sticky;top:0;z-index:2147483000}"
       : "";
 
-    shadow.innerHTML = `<style>${HEADER_CSS}${sticky}</style>${renderHeaderContent(site, "twp", this.detectTheme())}`;
+    const langSwitch: LanguageSwitch =
+      this.getAttribute("lang-switch") === "buttons" ? "buttons" : "link";
+
+    shadow.innerHTML =
+      `<style>${HEADER_CSS}${sticky}</style>` +
+      renderHeaderContent(site, { theme: this.detectTheme(), langSwitch });
+
+    if (!this.bound) {
+      shadow.addEventListener("click", this.onClick);
+      this.bound = true;
+    }
   }
 }
 

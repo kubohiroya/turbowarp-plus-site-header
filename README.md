@@ -52,6 +52,25 @@ Every one is optional; each overrides one of the guesses above.
 | `theme`          | `light`, `dark`, or `auto` to follow the reader's system setting              |
 | `sticky`         | keep it at the top while the page scrolls                                     |
 
+### A page that switches language in place
+
+The default offers the other language as a link, which suits a site with two
+sets of pages. A page that holds both languages at once has nowhere to send the
+reader, so it asks for buttons instead and acts on the press itself:
+
+```html
+<turbowarp-plus-header lang-switch="buttons"></turbowarp-plus-header>
+```
+
+```js
+document.addEventListener("turbowarp-plus:language", (event) => {
+  applyLanguage(event.detail.lang); // "en" or "ja"
+});
+```
+
+The header marks whichever language the page declares in `<html lang>`, and
+updates itself when the button is pressed.
+
 ## Why a custom element
 
 These sites were each written with their own stylesheet and no knowledge of

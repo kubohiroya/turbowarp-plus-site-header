@@ -1,6 +1,6 @@
 import type {
   HeaderLabels,
-  HeaderTheme,
+  RenderHeaderOptions,
   SiteContext,
   SiteLanguage,
 } from "./types.ts";
@@ -17,6 +17,7 @@ const LABELS: Readonly<Record<SiteLanguage, HeaderLabels>> = {
     repository: "GitHub",
     npm: "npm",
     switchTo: "日本語",
+    language: "Language",
   },
   ja: {
     brand: "TurboWarp Plus",
@@ -24,8 +25,15 @@ const LABELS: Readonly<Record<SiteLanguage, HeaderLabels>> = {
     repository: "GitHub",
     npm: "npm",
     switchTo: "English",
+    language: "言語",
   },
 };
+
+/** Each language named in its own language, which needs no translating. */
+const LANGUAGES: readonly { code: SiteLanguage; name: string }[] = [
+  { code: "en", name: "English" },
+  { code: "ja", name: "日本語" },
+];
 
 export function labelsFor(lang: SiteLanguage): HeaderLabels {
   return LABELS[lang];
@@ -160,6 +168,34 @@ export const HEADER_CSS = `
   outline-offset: 1px;
 }
 
+.twp-header__langs {
+  display: inline-flex;
+  border: 1px solid var(--twp-line);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.twp-header__lang {
+  font: inherit;
+  font-size: 12.5px;
+  padding: 4px 11px;
+  border: 0;
+  background: transparent;
+  color: var(--twp-muted);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.twp-header__lang[aria-pressed="true"] {
+  background: var(--twp-mid);
+  color: #fff;
+}
+
+.twp-header__lang:focus-visible {
+  outline: 2px solid var(--twp-mid);
+  outline-offset: -2px;
+}
+
 .twp-header__icon {
   width: 15px;
   height: 15px;
@@ -217,9 +253,9 @@ export function renderMark(idPrefix = "twp"): string {
  */
 export function renderHeaderContent(
   site: SiteContext,
-  idPrefix = "twp",
-  theme: HeaderTheme = "auto",
+  options: RenderHeaderOptions = {},
 ): string {
+  const { idPrefix = "twp", theme = "auto", langSwitch = "link" } = options;
   const labels = labelsFor(site.lang);
 
   const links: string[] = [];
@@ -233,7 +269,17 @@ export function renderHeaderContent(
       `<a class="twp-header__link" href="${escapeHtml(site.npmUrl)}" rel="noopener">${NPM_ICON}<span>${escapeHtml(labels.npm)}</span></a>`,
     );
   }
-  if (site.alternateUrl && site.alternateLang) {
+  if (langSwitch === "buttons") {
+    // The page switches language in place; the header only says which it is.
+    links.push(
+      `<div class="twp-header__langs" role="group" aria-label="${escapeHtml(labels.language)}">` +
+        LANGUAGES.map(
+          ({ code, name }) =>
+            `<button type="button" class="twp-header__lang" data-lang="${code}" lang="${code}" aria-pressed="${String(code === site.lang)}">${escapeHtml(name)}</button>`,
+        ).join("") +
+        `</div>`,
+    );
+  } else if (site.alternateUrl && site.alternateLang) {
     links.push(
       `<a class="twp-header__link" href="${escapeHtml(site.alternateUrl)}" lang="${site.alternateLang}" hreflang="${site.alternateLang}">${LANG_ICON}<span>${escapeHtml(labels.switchTo)}</span></a>`,
     );
