@@ -41,13 +41,25 @@ test("the npm link is absent for a site that is not a package", () => {
 });
 
 test("the language link carries its target language, named in that language", () => {
-  const english = renderHeaderContent(resolveSite(`${PAGES}/turbowarp-jsqr/`));
+  const declared = [
+    { hreflang: "en", href: `${PAGES}/turbowarp-jsqr/` },
+    { hreflang: "ja", href: `${PAGES}/turbowarp-jsqr/ja/` },
+  ];
+
+  const english = renderHeaderContent(
+    resolveSite(`${PAGES}/turbowarp-jsqr/`, { alternates: declared }),
+  );
   assert.match(english, /hreflang="ja"[^>]*>.*日本語/su);
 
   const japanese = renderHeaderContent(
-    resolveSite(`${PAGES}/turbowarp-jsqr/ja/`),
+    resolveSite(`${PAGES}/turbowarp-jsqr/ja/`, { alternates: declared }),
   );
   assert.match(japanese, /hreflang="en"[^>]*>.*English/su);
+});
+
+test("a page with no declared translation shows no language link", () => {
+  const html = renderHeaderContent(resolveSite(`${PAGES}/turbowarp-jsqr/`));
+  assert.doesNotMatch(html, /hreflang=/u);
 });
 
 test("gradient ids can be scoped so two headers on a page do not collide", () => {

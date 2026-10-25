@@ -42,15 +42,20 @@ export function resolveRepoFromUrl(url: URL, owner: string): string | null {
 /**
  * The same page in the other language.
  *
- * The page's own `hreflang` links are authoritative when it has them: the site
- * knows which of its pages are translated and this header does not. Otherwise
- * the path convention is assumed — `/<repo>/ja/...` beside `/<repo>/...`.
+ * Only the page's own `hreflang` links are trusted. The site knows which of
+ * its pages are translated and this header does not: of the 53 sites in this
+ * family, 36 declare no translation, and some of those genuinely have none.
+ * Guessing `/<repo>/ja/` for them offers the reader a link to a 404, which is
+ * worse than offering no link at all.
+ *
+ * `guess` opts into the path convention for a site that knows it holds.
  */
 export function resolveAlternate(
   url: URL,
   repo: string | null,
   lang: SiteLanguage,
   alternates: readonly AlternateLink[] = [],
+  guess = false,
 ): string | null {
   const wanted: SiteLanguage = lang === "ja" ? "en" : "ja";
 
@@ -62,7 +67,7 @@ export function resolveAlternate(
     }
   }
 
-  if (!repo) return null;
+  if (!guess || !repo) return null;
 
   const segments = splitPath(url.pathname);
   if (segments[0] !== repo) return null;
@@ -111,7 +116,13 @@ export function resolveSite(
       ? null
       : (options.npm ?? (repo ? `${scope}/${repo}` : null));
 
-  const alternateUrl = resolveAlternate(url, repo, lang, options.alternates);
+  const alternateUrl = resolveAlternate(
+    url,
+    repo,
+    lang,
+    options.alternates,
+    options.guessAlternate ?? false,
+  );
 
   return {
     owner,

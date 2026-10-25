@@ -76,6 +76,7 @@ export class TurboWarpPlusHeader extends HTMLElement {
     "site-lang",
     "sticky",
     "theme",
+    "guess-alternate",
   ];
 
   private media: MediaQueryList | null = null;
@@ -123,6 +124,7 @@ export class TurboWarpPlusHeader extends HTMLElement {
     if (this.getAttribute("index")) {
       options.indexUrl = this.getAttribute("index") as string;
     }
+    if (this.hasAttribute("guess-alternate")) options.guessAlternate = true;
     return options;
   }
 

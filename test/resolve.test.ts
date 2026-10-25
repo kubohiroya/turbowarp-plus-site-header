@@ -99,12 +99,30 @@ test("relative hreflang hrefs resolve against the page", () => {
   assert.equal(site.alternateUrl, `${PAGES}/turbowarp-jsqr/ja/`);
 });
 
-test("without hreflang links the /ja/ convention is assumed, both ways", () => {
+test("a page that declares no translation is offered no language link", () => {
+  const site = resolveSite(`${PAGES}/turbowarp-extension-template/`);
+  assert.equal(site.alternateUrl, null);
+  assert.equal(site.alternateLang, null);
+});
+
+test("the /ja/ convention is used only when a site opts into it", () => {
   assert.equal(
     resolveAlternate(
       new URL(`${PAGES}/turbowarp-jsqr/`),
       "turbowarp-jsqr",
       "en",
+      [],
+      false,
+    ),
+    null,
+  );
+  assert.equal(
+    resolveAlternate(
+      new URL(`${PAGES}/turbowarp-jsqr/`),
+      "turbowarp-jsqr",
+      "en",
+      [],
+      true,
     ),
     `${PAGES}/turbowarp-jsqr/ja/`,
   );
@@ -113,6 +131,8 @@ test("without hreflang links the /ja/ convention is assumed, both ways", () => {
       new URL(`${PAGES}/turbowarp-jsqr/ja/`),
       "turbowarp-jsqr",
       "ja",
+      [],
+      true,
     ),
     `${PAGES}/turbowarp-jsqr/`,
   );
@@ -124,6 +144,8 @@ test("the rest of a deep path is carried across the language switch", () => {
       new URL(`${PAGES}/turbowarp-jsqr/guide/blocks.html`),
       "turbowarp-jsqr",
       "en",
+      [],
+      true,
     ),
     `${PAGES}/turbowarp-jsqr/ja/guide/blocks.html`,
   );
@@ -132,6 +154,8 @@ test("the rest of a deep path is carried across the language switch", () => {
       new URL(`${PAGES}/turbowarp-jsqr/ja/guide/blocks.html`),
       "turbowarp-jsqr",
       "ja",
+      [],
+      true,
     ),
     `${PAGES}/turbowarp-jsqr/guide/blocks.html`,
   );

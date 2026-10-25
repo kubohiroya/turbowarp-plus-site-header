@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>TurboWarp Plus site header</title>
+    <meta
+      name="description"
+      content="A shared header for the documentation sites of the TurboWarp Plus packages."
+    />
+    <style>
+      :root {
+        color-scheme: light dark;
+        --bg: #f6f7fb;
+        --fg: #1a1d26;
+        --muted: #68718a;
+        --line: #dfe3ec;
+        --panel: #fff;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #0e1016;
+          --fg: #e7eaf2;
+          --muted: #949db8;
+          --line: #272c38;
+          --panel: #171a22;
+        }
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--fg);
+        font:
+          15px/1.6 system-ui,
+          -apple-system,
+          "Segoe UI",
+          "Hiragino Sans",
+          "Noto Sans JP",
+          sans-serif;
+      }
+      main {
+        max-width: 46rem;
+        margin: 0 auto;
+        padding: 2.5rem 1rem 5rem;
+      }
+      h1 {
+        font-size: 1.8rem;
+        margin: 0 0 0.4rem;
+      }
+      p.lead {
+        color: var(--muted);
+        margin-top: 0;
+      }
+      pre {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 14px 16px;
+        overflow-x: auto;
+        font-size: 13px;
+      }
+      a {
+        color: #3b55e0;
+      }
+      @media (prefers-color-scheme: dark) {
+        a {
+          color: #7f93ff;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <turbowarp-plus-header
+      repo="turbowarp-plus-site-header"
+      sticky
+    ></turbowarp-plus-header>
+
+    <main>
+      <h1>TurboWarp Plus site header</h1>
+      <p class="lead">
+        The bar at the top of this page is the package. It is on this page the
+        same way it goes on any other: one script tag.
+      </p>
+
+      <pre><code>&lt;script type="module"
+        src="https://kubohiroya.github.io/turbowarp-plus-site-header/dist/auto.js"&gt;&lt;/script&gt;</code></pre>
+
+      <p>
+        <a href="./demo/">A demo page</a> carrying a deliberately hostile
+        stylesheet, so the isolation is visible rather than assumed &middot;
+        <a href="https://github.com/kubohiroya/turbowarp-plus-site-header"
+          >Source and documentation</a
+        >
+        &middot;
+        <a href="https://kubohiroya.github.io/turbowarp-plus-packages/"
+          >All TurboWarp Plus packages</a
+        >
+      </p>
+    </main>
+
+    <script type="module" src="./dist/auto.js"></script>
+  </body>
+</html>

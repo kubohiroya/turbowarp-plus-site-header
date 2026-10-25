@@ -25,6 +25,11 @@ export interface ResolveSiteOptions {
   readonly indexUrl?: string;
   /** The page's own `<link rel="alternate" hreflang="...">` entries. */
   readonly alternates?: readonly AlternateLink[];
+  /**
+   * Assume `/<repo>/ja/` exists beside `/<repo>/` when the page declares no
+   * translation. Off by default: a guessed link that 404s is worse than none.
+   */
+  readonly guessAlternate?: boolean;
   /** Overrides every other signal. */
   readonly lang?: string | null;
   /**
