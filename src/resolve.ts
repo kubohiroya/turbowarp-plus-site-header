@@ -87,6 +87,16 @@ export function resolveAlternate(
   return alternate.toString();
 }
 
+/** Whether two addresses point at the same document, ignoring query and hash. */
+function sameDocument(url: URL, other: string): boolean {
+  try {
+    const target = new URL(other, url);
+    return target.origin === url.origin && target.pathname === url.pathname;
+  } catch {
+    return false;
+  }
+}
+
 /** Everything the header needs, worked out from one URL. */
 export function resolveSite(
   href: string | URL,
@@ -134,5 +144,6 @@ export function resolveSite(
     alternateUrl,
     alternateLang: alternateUrl ? (lang === "ja" ? "en" : "ja") : null,
     indexUrl,
+    atIndex: sameDocument(url, indexUrl),
   };
 }

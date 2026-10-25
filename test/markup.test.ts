@@ -80,3 +80,14 @@ test("markup in a repository name cannot escape into the page", () => {
 test("escapeHtml covers the five characters that matter", () => {
   assert.equal(escapeHtml(`&<>"'`), "&amp;&lt;&gt;&quot;&#39;");
 });
+
+test("on the index itself the brand says so", () => {
+  const index = "https://kubohiroya.github.io/turbowarp-plus-packages/";
+  const onIndex = renderHeaderContent(resolveSite(index));
+  assert.match(onIndex, /aria-current="page"/u);
+
+  const elsewhere = renderHeaderContent(
+    resolveSite(`${PAGES}/turbowarp-jsqr/`),
+  );
+  assert.doesNotMatch(elsewhere, /aria-current/u);
+});

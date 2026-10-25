@@ -243,8 +243,11 @@ export function renderHeaderContent(
     ? `<span class="twp-header__sep" aria-hidden="true">/</span><span class="twp-header__site">${escapeHtml(site.repo)}</span>`
     : "";
 
+  // On the index itself the brand is a link to where the reader already is.
+  const current = site.atIndex ? ' aria-current="page"' : "";
+
   return `<div class="twp-header" data-theme="${escapeHtml(theme)}">
-  <a class="twp-header__brand" href="${escapeHtml(site.indexUrl)}" title="${escapeHtml(labels.indexTitle)}">
+  <a class="twp-header__brand" href="${escapeHtml(site.indexUrl)}" title="${escapeHtml(labels.indexTitle)}"${current}>
     ${renderMark(idPrefix)}
     <span class="twp-header__brand-name">${escapeHtml(labels.brand)}</span>
   </a>

@@ -51,6 +51,8 @@ export interface SiteContext {
   readonly alternateUrl: string | null;
   readonly alternateLang: SiteLanguage | null;
   readonly indexUrl: string;
+  /** True when this page is the index the brand links to. */
+  readonly atIndex: boolean;
 }
 
 /** "auto" follows the reader's system setting; the others are fixed. */
