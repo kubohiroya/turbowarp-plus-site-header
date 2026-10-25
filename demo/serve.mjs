@@ -28,6 +28,8 @@ createServer(async (request, response) => {
   }
   response.writeHead(200, {
     'content-type': TYPES[extname(file)] ?? 'application/octet-stream',
+    // So another local server can load the module while trying it out.
+    'access-control-allow-origin': '*',
   });
   createReadStream(file).pipe(response);
 }).listen(PORT, () => console.log(`http://localhost:${PORT}/`));
