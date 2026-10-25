@@ -43,13 +43,21 @@ Never patch a built artifact — `dist`, `_site`, a `gh-pages` branch — direct
 
 ## Before changing what the header renders
 
-Every site on the family loads the same build, and GitHub Pages serves it with
-`cache-control: max-age=600`. A change reaches readers over the following ten
-minutes, and not all at once: `auto.js`, `element.js` and `markup.js` are
-separate requests with separate cache lifetimes, so for a short window a page
-can run a mix of old and new. A query string on `auto.js` does not fix this —
-its static imports carry no query.
+Every site on the family loads the same `dist/auto.js`, and GitHub Pages serves
+it with `cache-control: max-age=600`. A change therefore reaches readers over
+the following ten minutes rather than at once.
 
-So: keep changes additive, and do not remove something a page depends on in the
-same release that adds its replacement. Bundling the distributed files into one
-would close the window; it has not been done.
+The entry is bundled into one file, which is what keeps that delay harmless: a
+browser holds either the whole previous build or the whole new one, never a
+mixture. It used to be a module graph of five files, each carrying its own ten
+minutes, and a new `element.js` could run against a cached `markup.js` — which
+is how the dashboard briefly ended up with no language switch at all, the page
+having asked for buttons that the cached renderer did not know how to draw. A
+query string on the entry does not help with that, because static imports carry
+none; one file does.
+
+So keep `src/auto.ts` the only entry a browser fetches. `test/bundle.test.ts`
+fails if anything relative survives in the output.
+
+Still worth doing anyway: do not remove something a page depends on in the same
+release that adds its replacement. Ten minutes is short, but it is not zero.

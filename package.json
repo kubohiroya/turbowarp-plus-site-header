@@ -35,7 +35,7 @@
   },
   "packageManager": "pnpm@11.18.0",
   "scripts": {
-    "build": "tsc --project tsconfig.build.json && node scripts/emit-css.mjs",
+    "build": "tsc --project tsconfig.build.json && node scripts/emit-css.mjs && node scripts/bundle.mjs",
     "clean": "rm -rf dist",
     "demo": "npm run build && node demo/serve.mjs",
     "format": "prettier --check \"**/*.{css,html,json,md,ts,yml}\"",
@@ -58,6 +58,7 @@
   "devDependencies": {
     "@eslint/js": "10.0.1",
     "@types/node": "^26.4.1",
+    "esbuild": "0.28.2",
     "eslint": "^10.9.1",
     "globals": "17.12.0",
     "prettier": "^3.9.6",

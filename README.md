@@ -8,7 +8,8 @@ It sits above whatever the site already has. Roughly half of these sites have a 
 
 ## Use it
 
-One script tag, nothing else:
+One script tag, nothing else — a single bundled file, so a browser holds
+either the whole previous build or the whole new one, never a mixture:
 
 ```html
 <script
