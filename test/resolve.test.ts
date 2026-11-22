@@ -11,15 +11,15 @@ const PAGES = "https://kubohiroya.github.io";
 
 test("the first path segment of a Project Pages URL is the repository", () => {
   assert.equal(
-    resolveRepoFromUrl(new URL(`${PAGES}/turbowarp-jsqr/`), "kubohiroya"),
-    "turbowarp-jsqr",
+    resolveRepoFromUrl(new URL(`${PAGES}/turbowarp-zxing/`), "kubohiroya"),
+    "turbowarp-zxing",
   );
   assert.equal(
     resolveRepoFromUrl(
-      new URL(`${PAGES}/turbowarp-jsqr/ja/guide.html`),
+      new URL(`${PAGES}/turbowarp-zxing/ja/guide.html`),
       "kubohiroya",
     ),
-    "turbowarp-jsqr",
+    "turbowarp-zxing",
   );
 });
 
@@ -32,13 +32,13 @@ test("a custom domain has no repository segment to read", () => {
 });
 
 test("the repository gives the GitHub and npm links", () => {
-  const site = resolveSite(`${PAGES}/turbowarp-jsqr/`);
-  assert.equal(site.repo, "turbowarp-jsqr");
-  assert.equal(site.repoUrl, "https://github.com/kubohiroya/turbowarp-jsqr");
-  assert.equal(site.npmName, "@kubohiroya/turbowarp-jsqr");
+  const site = resolveSite(`${PAGES}/turbowarp-zxing/`);
+  assert.equal(site.repo, "turbowarp-zxing");
+  assert.equal(site.repoUrl, "https://github.com/kubohiroya/turbowarp-zxing");
+  assert.equal(site.npmName, "@kubohiroya/turbowarp-zxing");
   assert.equal(
     site.npmUrl,
-    "https://www.npmjs.com/package/@kubohiroya/turbowarp-jsqr",
+    "https://www.npmjs.com/package/@kubohiroya/turbowarp-zxing",
   );
 });
 
@@ -61,19 +61,19 @@ test("an unscoped npm name can be given explicitly", () => {
 });
 
 test("the /ja/ segment marks a Japanese page", () => {
-  assert.equal(resolveSite(`${PAGES}/turbowarp-jsqr/ja/`).lang, "ja");
-  assert.equal(resolveSite(`${PAGES}/turbowarp-jsqr/`).lang, "en");
+  assert.equal(resolveSite(`${PAGES}/turbowarp-zxing/ja/`).lang, "ja");
+  assert.equal(resolveSite(`${PAGES}/turbowarp-zxing/`).lang, "en");
 });
 
 test("what the page says about itself beats what its address implies", () => {
-  const site = resolveSite(`${PAGES}/turbowarp-jsqr/`, {
+  const site = resolveSite(`${PAGES}/turbowarp-zxing/`, {
     documentLang: "ja-JP",
   });
   assert.equal(site.lang, "ja");
 });
 
 test("an explicit language beats both", () => {
-  const site = resolveSite(`${PAGES}/turbowarp-jsqr/ja/`, {
+  const site = resolveSite(`${PAGES}/turbowarp-zxing/ja/`, {
     documentLang: "ja",
     lang: "en",
   });
@@ -81,22 +81,22 @@ test("an explicit language beats both", () => {
 });
 
 test("the page's own hreflang links are used when it has them", () => {
-  const site = resolveSite(`${PAGES}/turbowarp-jsqr/`, {
+  const site = resolveSite(`${PAGES}/turbowarp-zxing/`, {
     alternates: [
-      { hreflang: "en", href: `${PAGES}/turbowarp-jsqr/` },
-      { hreflang: "ja", href: `${PAGES}/turbowarp-jsqr/ja/` },
-      { hreflang: "x-default", href: `${PAGES}/turbowarp-jsqr/` },
+      { hreflang: "en", href: `${PAGES}/turbowarp-zxing/` },
+      { hreflang: "ja", href: `${PAGES}/turbowarp-zxing/ja/` },
+      { hreflang: "x-default", href: `${PAGES}/turbowarp-zxing/` },
     ],
   });
-  assert.equal(site.alternateUrl, `${PAGES}/turbowarp-jsqr/ja/`);
+  assert.equal(site.alternateUrl, `${PAGES}/turbowarp-zxing/ja/`);
   assert.equal(site.alternateLang, "ja");
 });
 
 test("relative hreflang hrefs resolve against the page", () => {
-  const site = resolveSite(`${PAGES}/turbowarp-jsqr/`, {
+  const site = resolveSite(`${PAGES}/turbowarp-zxing/`, {
     alternates: [{ hreflang: "ja", href: "./ja/" }],
   });
-  assert.equal(site.alternateUrl, `${PAGES}/turbowarp-jsqr/ja/`);
+  assert.equal(site.alternateUrl, `${PAGES}/turbowarp-zxing/ja/`);
 });
 
 test("a page that declares no translation is offered no language link", () => {
@@ -108,8 +108,8 @@ test("a page that declares no translation is offered no language link", () => {
 test("the /ja/ convention is used only when a site opts into it", () => {
   assert.equal(
     resolveAlternate(
-      new URL(`${PAGES}/turbowarp-jsqr/`),
-      "turbowarp-jsqr",
+      new URL(`${PAGES}/turbowarp-zxing/`),
+      "turbowarp-zxing",
       "en",
       [],
       false,
@@ -118,46 +118,46 @@ test("the /ja/ convention is used only when a site opts into it", () => {
   );
   assert.equal(
     resolveAlternate(
-      new URL(`${PAGES}/turbowarp-jsqr/`),
-      "turbowarp-jsqr",
+      new URL(`${PAGES}/turbowarp-zxing/`),
+      "turbowarp-zxing",
       "en",
       [],
       true,
     ),
-    `${PAGES}/turbowarp-jsqr/ja/`,
+    `${PAGES}/turbowarp-zxing/ja/`,
   );
   assert.equal(
     resolveAlternate(
-      new URL(`${PAGES}/turbowarp-jsqr/ja/`),
-      "turbowarp-jsqr",
+      new URL(`${PAGES}/turbowarp-zxing/ja/`),
+      "turbowarp-zxing",
       "ja",
       [],
       true,
     ),
-    `${PAGES}/turbowarp-jsqr/`,
+    `${PAGES}/turbowarp-zxing/`,
   );
 });
 
 test("the rest of a deep path is carried across the language switch", () => {
   assert.equal(
     resolveAlternate(
-      new URL(`${PAGES}/turbowarp-jsqr/guide/blocks.html`),
-      "turbowarp-jsqr",
+      new URL(`${PAGES}/turbowarp-zxing/guide/blocks.html`),
+      "turbowarp-zxing",
       "en",
       [],
       true,
     ),
-    `${PAGES}/turbowarp-jsqr/ja/guide/blocks.html`,
+    `${PAGES}/turbowarp-zxing/ja/guide/blocks.html`,
   );
   assert.equal(
     resolveAlternate(
-      new URL(`${PAGES}/turbowarp-jsqr/ja/guide/blocks.html`),
-      "turbowarp-jsqr",
+      new URL(`${PAGES}/turbowarp-zxing/ja/guide/blocks.html`),
+      "turbowarp-zxing",
       "ja",
       [],
       true,
     ),
-    `${PAGES}/turbowarp-jsqr/guide/blocks.html`,
+    `${PAGES}/turbowarp-zxing/guide/blocks.html`,
   );
 });
 

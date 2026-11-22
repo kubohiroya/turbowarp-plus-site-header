@@ -93,7 +93,7 @@ import {
 } from "@kubohiroya/turbowarp-plus-site-header";
 
 const html = renderSiteHeader(
-  resolveSite("https://kubohiroya.github.io/turbowarp-jsqr/"),
+  resolveSite("https://kubohiroya.github.io/turbowarp-zxing/"),
 );
 ```
 

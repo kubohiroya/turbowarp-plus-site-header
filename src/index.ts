@@ -7,7 +7,7 @@
  *     <script type="module" src=".../dist/auto.js"></script>
  *
  *   Build time — paste the markup in and ship the stylesheet beside it:
- *     renderSiteHeader(resolveSite('https://…/turbowarp-jsqr/'))
+ *     renderSiteHeader(resolveSite('https://…/turbowarp-zxing/'))
  *     <link rel="stylesheet" href=".../header.css">
  *
  * The runtime path is the one to reach for. It puts the header in a shadow

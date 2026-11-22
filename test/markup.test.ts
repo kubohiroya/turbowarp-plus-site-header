@@ -7,7 +7,7 @@ import { resolveSite } from "../src/resolve.ts";
 const PAGES = "https://kubohiroya.github.io";
 
 test("the brand links to the family index", () => {
-  const html = renderHeaderContent(resolveSite(`${PAGES}/turbowarp-jsqr/`));
+  const html = renderHeaderContent(resolveSite(`${PAGES}/turbowarp-zxing/`));
   assert.match(
     html,
     /href="https:\/\/kubohiroya\.github\.io\/turbowarp-plus-packages\/"/u,
@@ -16,19 +16,19 @@ test("the brand links to the family index", () => {
 });
 
 test("it names the package the page belongs to", () => {
-  const html = renderHeaderContent(resolveSite(`${PAGES}/turbowarp-jsqr/`));
-  assert.match(html, /class="twp-header__site">turbowarp-jsqr</u);
+  const html = renderHeaderContent(resolveSite(`${PAGES}/turbowarp-zxing/`));
+  assert.match(html, /class="twp-header__site">turbowarp-zxing</u);
 });
 
 test("it offers the repository and the npm page", () => {
-  const html = renderHeaderContent(resolveSite(`${PAGES}/turbowarp-jsqr/`));
+  const html = renderHeaderContent(resolveSite(`${PAGES}/turbowarp-zxing/`));
   assert.match(
     html,
-    /href="https:\/\/github\.com\/kubohiroya\/turbowarp-jsqr"/u,
+    /href="https:\/\/github\.com\/kubohiroya\/turbowarp-zxing"/u,
   );
   assert.match(
     html,
-    /href="https:\/\/www\.npmjs\.com\/package\/@kubohiroya\/turbowarp-jsqr"/u,
+    /href="https:\/\/www\.npmjs\.com\/package\/@kubohiroya\/turbowarp-zxing"/u,
   );
 });
 
@@ -42,23 +42,23 @@ test("the npm link is absent for a site that is not a package", () => {
 
 test("the language link carries its target language, named in that language", () => {
   const declared = [
-    { hreflang: "en", href: `${PAGES}/turbowarp-jsqr/` },
-    { hreflang: "ja", href: `${PAGES}/turbowarp-jsqr/ja/` },
+    { hreflang: "en", href: `${PAGES}/turbowarp-zxing/` },
+    { hreflang: "ja", href: `${PAGES}/turbowarp-zxing/ja/` },
   ];
 
   const english = renderHeaderContent(
-    resolveSite(`${PAGES}/turbowarp-jsqr/`, { alternates: declared }),
+    resolveSite(`${PAGES}/turbowarp-zxing/`, { alternates: declared }),
   );
   assert.match(english, /hreflang="ja"[^>]*>.*日本語/su);
 
   const japanese = renderHeaderContent(
-    resolveSite(`${PAGES}/turbowarp-jsqr/ja/`, { alternates: declared }),
+    resolveSite(`${PAGES}/turbowarp-zxing/ja/`, { alternates: declared }),
   );
   assert.match(japanese, /hreflang="en"[^>]*>.*English/su);
 });
 
 test("a page with no declared translation shows no language link", () => {
-  const html = renderHeaderContent(resolveSite(`${PAGES}/turbowarp-jsqr/`));
+  const html = renderHeaderContent(resolveSite(`${PAGES}/turbowarp-zxing/`));
   assert.doesNotMatch(html, /hreflang=/u);
 });
 
@@ -91,15 +91,18 @@ test("on the index itself the brand says so", () => {
   assert.match(onIndex, /aria-current="page"/u);
 
   const elsewhere = renderHeaderContent(
-    resolveSite(`${PAGES}/turbowarp-jsqr/`),
+    resolveSite(`${PAGES}/turbowarp-zxing/`),
   );
   assert.doesNotMatch(elsewhere, /aria-current/u);
 });
 
 test("the buttons mode draws both languages and marks the current one", () => {
-  const html = renderHeaderContent(resolveSite(`${PAGES}/turbowarp-jsqr/ja/`), {
-    langSwitch: "buttons",
-  });
+  const html = renderHeaderContent(
+    resolveSite(`${PAGES}/turbowarp-zxing/ja/`),
+    {
+      langSwitch: "buttons",
+    },
+  );
   assert.match(html, /data-lang="en"[^>]*aria-pressed="false"/u);
   assert.match(html, /data-lang="ja"[^>]*aria-pressed="true"/u);
   assert.match(html, /English/u);
@@ -107,9 +110,9 @@ test("the buttons mode draws both languages and marks the current one", () => {
 });
 
 test("the buttons mode replaces the link, rather than adding to it", () => {
-  const declared = [{ hreflang: "ja", href: `${PAGES}/turbowarp-jsqr/ja/` }];
+  const declared = [{ hreflang: "ja", href: `${PAGES}/turbowarp-zxing/ja/` }];
   const html = renderHeaderContent(
-    resolveSite(`${PAGES}/turbowarp-jsqr/`, { alternates: declared }),
+    resolveSite(`${PAGES}/turbowarp-zxing/`, { alternates: declared }),
     { langSwitch: "buttons" },
   );
   assert.doesNotMatch(html, /hreflang=/u);
